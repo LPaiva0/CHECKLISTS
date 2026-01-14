@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard | Log{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="fw-bold text-dark mb-0">Indicadores de Performance</h2>
+        <p class="text-muted">Análise de conformidade em {{ data_selecionada_str_br }}</p>
+    </div>
+    <div class="d-flex gap-2">
+        <input type="date" class="form-control" value="{{ data_selecionada_str }}">
+        <button class="btn btn-outline-primary"><i class="fas fa-filter"></i></button>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm p-3">
+            <div class="d-flex align-items-center">
+                <div class="p-3 bg-primary bg-opacity-10 text-primary rounded-3"><i class="fas fa-clipboard-list fa-2x"></i></div>
+                <div class="ms-3">
+                    <small class="text-muted d-block">Total Realizado</small>
+                    <span class="h4 fw-bold mb-0">{{ total_checklists }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm p-3">
+            <div class="d-flex align-items-center">
+                <div class="p-3 bg-success bg-opacity-10 text-success rounded-3"><i class="fas fa-check-circle fa-2x"></i></div>
+                <div class="ms-3">
+                    <small class="text-muted d-block">Taxa Aprovação</small>
+                    <span class="h4 fw-bold mb-0">{{ "%.1f"|format(taxa_aprovacao) }}%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm p-3">
+            <div class="d-flex align-items-center">
+                <div class="p-3 bg-danger bg-opacity-10 text-danger rounded-3"><i class="fas fa-times-circle fa-2x"></i></div>
+                <div class="ms-3">
+                    <small class="text-muted d-block">Reprovações</small>
+                    <span class="h4 fw-bold mb-0">{{ total_nao_conformes }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm p-3">
+            <div class="d-flex align-items-center">
+                <div class="p-3 bg-warning bg-opacity-10 text-warning rounded-3"><i class="fas fa-exclamation-triangle fa-2x"></i></div>
+                <div class="ms-3">
+                    <small class="text-muted d-block">Veículos Críticos</small>
+                    <span class="h4 fw-bold mb-0">08</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white border-0 py-3"><h6 class="fw-bold mb-0">Volume por Operação</h6></div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr><th>Modelo</th><th>Frequência</th><th class="text-center">Qtd</th></tr>
+                        </thead>
+                        <tbody>
+                            {% for mod in resumo_por_modelo %}
+                            <tr>
+                                <td><strong>{{ mod.NOME_MODELO }}</strong></td>
+                                <td>{{ mod.PERIODICIDADE }}</td>
+                                <td class="text-center">{{ mod.QTD }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white border-0 py-3"><h6 class="fw-bold text-danger mb-0">Veículos em Alerta</h6></div>
+            <div class="card-body">
+                {% for v in top_veiculos_problema %}
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                        <span class="fw-bold d-block">{{ v.PLACA_VEICULO }}</span>
+                        <small class="text-muted">{{ v.COD_MOTORISTA }}</small>
+                    </div>
+                    <span class="badge bg-danger rounded-pill">{{ v.QTD_ERROS }} falhas</span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

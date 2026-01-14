@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}Gerenciar Modelos | Checklist{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="fw-bold text-dark mb-0">Gestão de Modelos</h2>
+        <p class="text-muted">Configuração de inspeções e fluxos operacionais</p>
+    </div>
+    <button class="btn btn-primary px-4 shadow-sm" data-bs-toggle="modal" data-bs-target="#modalNovo">
+        <i class="fas fa-plus me-2"></i> Criar Novo Modelo
+    </button>
+</div>
+
+<div class="row row-cols-1 row-cols-lg-3 g-4">
+    {% for modelo in modelos %}
+    <div class="col">
+        <div class="card border-0 shadow-sm h-100 position-relative overflow-hidden">
+            <div class="position-absolute top-0 start-0 w-100" style="height: 4px; background: #3498db;"></div>
+            
+            <div class="card-body pt-4">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <span class="badge bg-light text-dark border">{{ modelo.TIPO_VEICULO }}</span>
+                    <div class="dropdown">
+                        <button class="btn btn-link text-muted p-0" data-bs-toggle="dropdown text-decoration-none">
+                            <i class="fas fa-ellipsis-v"></i>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-edit me-2 small"></i>Editar</a></li>
+                            <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash me-2 small"></i>Inativar</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h5 class="fw-bold mb-1">{{ modelo.NOME }}</h5>
+                <p class="small text-muted mb-4"><i class="fas fa-envelope me-1"></i> Notificações para: {{ modelo.EMAILS_NOTIFICACAO }}</p>
+
+                <div class="d-flex justify-content-between align-items-center bg-light rounded p-2">
+                    <div class="text-center px-2">
+                        <small class="d-block text-muted" style="font-size: 0.7rem;">Periodicidade</small>
+                        <span class="fw-semibold small">{{ modelo.PERIODICIDADE }}</span>
+                    </div>
+                    <div class="vr text-muted opacity-25" style="height: 20px;"></div>
+                    <div class="text-center px-2">
+                        <small class="d-block text-muted" style="font-size: 0.7rem;">Status</small>
+                        <span class="badge bg-success-subtle text-success border border-success-subtle">Ativo</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card-footer bg-white border-0 pb-3">
+                <button class="btn btn-outline-primary btn-sm w-100 rounded-pill">
+                    Configurar Perguntas
+                </button>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="modal fade" id="modalNovo" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header border-0">
+                <h5 class="modal-title fw-bold">Novo Modelo de Checklist</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body pt-0">
+                <form>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Nome do Modelo</label>
+                        <input type="text" class="form-control" placeholder="Ex: Inspeção de Pneus">
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label class="form-label small fw-bold">Periodicidade</label>
+                            <select class="form-select">
+                                <option>Diário</option>
+                                <option>Semanal</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <label class="form-label small fw-bold">Tipo</label>
+                            <select class="form-select">
+                                <option>Caminhão</option>
+                                <option>Maquinário</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer border-0">
+                <button class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
+                <button class="btn btn-primary">Salvar Modelo</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
